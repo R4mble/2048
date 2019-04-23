@@ -22642,11 +22642,11 @@ const choose = arr => {
 
 // Grid -> Grid
 const addTile = grid => {
-    let candidates = getZeroes(grid)
-    let pick = choose(candidates)
-    let val = choose([2,2,2,2,2,2,4])
-    // showNumber(pick[0], pick[1], val)
-    return setSquare(grid, pick, val)
+    let candidates = getZeroes(grid);
+    let pick = choose(candidates);
+    let val = choose([2,2,2,2,2,2,4]);
+    v.showNumber(pick[0], pick[1], val);
+    return setSquare(grid, pick, val);
 }
 
 // Grid -> Bool
@@ -22790,6 +22790,21 @@ const displayScore = score => {
     $("#score").text(score);
 }    
 
+function showNumber(i,j,randNumber){
+    let numberCell=$("#number-cell-"+ i +"-" + j);
+    numberCell.css('background-color',getNumberBackgroundColor(randNumber));
+    numberCell.css('color',getNumberColor(randNumber));
+    numberCell.text(randNumber);
+
+    numberCell.animate({
+        width:cellSideLength,
+        height:cellSideLength,
+        top:getPos(i),
+        left:getPos(j)
+    },50);
+}
+
 module.exports.render = render;
 module.exports.displayScore = displayScore;
+module.exports.showNumber = showNumber;
 },{"jquery":330,"ramda":88}]},{},[331]);

@@ -64,11 +64,11 @@ const choose = arr => {
 
 // Grid -> Grid
 const addTile = grid => {
-    let candidates = getZeroes(grid)
-    let pick = choose(candidates)
-    let val = choose([2,2,2,2,2,2,4])
-    // showNumber(pick[0], pick[1], val)
-    return setSquare(grid, pick, val)
+    let candidates = getZeroes(grid);
+    let pick = choose(candidates);
+    let val = choose([2,2,2,2,2,2,4]);
+    v.showNumber(pick[0], pick[1], val);
+    return setSquare(grid, pick, val);
 }
 
 // Grid -> Bool

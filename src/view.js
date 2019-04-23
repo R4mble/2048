@@ -96,5 +96,20 @@ const displayScore = score => {
     $("#score").text(score);
 }    
 
+function showNumber(i,j,randNumber){
+    let numberCell=$("#number-cell-"+ i +"-" + j);
+    numberCell.css('background-color',getNumberBackgroundColor(randNumber));
+    numberCell.css('color',getNumberColor(randNumber));
+    numberCell.text(randNumber);
+
+    numberCell.animate({
+        width:cellSideLength,
+        height:cellSideLength,
+        top:getPos(i),
+        left:getPos(j)
+    },50);
+}
+
 module.exports.render = render;
 module.exports.displayScore = displayScore;
+module.exports.showNumber = showNumber;
