@@ -22578,6 +22578,7 @@ return jQuery;
 },{}],331:[function(require,module,exports){
 const $ = require('jquery');
 const _ = require('ramda');
+const v = require('./view.js');
 
 // [Int] -> [Int]
 function merge(row) {
@@ -22651,6 +22652,44 @@ const check2048 = grid => _.length(_.filter(x => x === 2048, _.flatten(grid))) !
 
 const start = () => addTile(addTile(_.repeat([0,0,0,0], 4)));
 
+
+
+
+
+
+
+let grid = start();
+v.render(grid);
+
+document.onkeydown = function(event) {
+    if (!canMove(grid)) {
+        alert("Game Over!");
+        grid = start();
+    } else if (check2048(grid)) {
+        alert("You Win!");
+        grid = start();
+    } else {
+        if (event.keyCode == 37) {
+            grid = addTile(moveLeft(grid));
+        } else if (event.keyCode == 38) {
+            grid = addTile(moveUp(grid));
+        } else if (event.keyCode == 39) {
+            grid = addTile(moveRight(grid));
+        } else if (event.keyCode == 40) {
+            grid = addTile(moveDown(grid));
+        } 
+    }
+    v.render(grid);
+}
+
+
+
+
+
+},{"./view.js":332,"jquery":330,"ramda":88}],332:[function(require,module,exports){
+const _ = require('ramda');
+const $ = require('jquery');
+
 const root = document.getElementById("root");
 for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
@@ -22683,6 +22722,7 @@ _.forEach(g => {
 
 const cellSapce=20;
 const cellSideLength=100;
+
 const getPos = i =>  cellSapce + i * (cellSapce + cellSideLength);
 
 for(let i= 0 ;i< 4; i++) {
@@ -22691,6 +22731,32 @@ for(let i= 0 ;i< 4; i++) {
         gridCellStyle.top = getPos(i) + "px";
         gridCellStyle.left = getPos(j) + "px";
     }
+}    
+
+
+function getNumberBackgroundColor(number){
+    switch(number){
+        case 2:return"#eee4da";break;
+        case 4:return"#ede0c8";break;
+        case 8:return"#f2b179";break;
+        case 16:return"#f59563";break;
+        case 32:return"#f67e5f";break;
+        case 64:return"#f65e3b";break;
+        case 128:return"#edcf72";break;
+        case 256:return"#edcc61";break;
+        case 512:return"#9c0";break;
+        case 1024:return"#33b5e5";break;
+        case 2048:return"#09c";break;
+        case 4096:return"#a6c";break;
+        case 8192:return"#93c";break;
+    }
+    return "black";
+}
+
+function getNumberColor(number){
+    if(number<=4)
+        return "#776e65";
+    return "white";
 }
 
 // Grid -> Html msg
@@ -22722,55 +22788,8 @@ const render = grid => {
     }
 }
 
-let grid = start();
-render(grid);
-
-document.onkeydown = function(event) {
-    if (!canMove(grid)) {
-        alert("Game Over!");
-        grid = start();
-    } else if (check2048(grid)) {
-        alert("You Win!");
-        grid = start();
-    } else {
-        if (event.keyCode == 37) {
-            grid = addTile(moveLeft(grid));
-        } else if (event.keyCode == 38) {
-            grid = addTile(moveUp(grid));
-        } else if (event.keyCode == 39) {
-            grid = addTile(moveRight(grid));
-        } else if (event.keyCode == 40) {
-            grid = addTile(moveDown(grid));
-        } 
-    }
-    render(grid);
-}
-
-function getNumberBackgroundColor(number){
-    switch(number){
-        case 2:return"#eee4da";break;
-        case 4:return"#ede0c8";break;
-        case 8:return"#f2b179";break;
-        case 16:return"#f59563";break;
-        case 32:return"#f67e5f";break;
-        case 64:return"#f65e3b";break;
-        case 128:return"#edcf72";break;
-        case 256:return"#edcc61";break;
-        case 512:return"#9c0";break;
-        case 1024:return"#33b5e5";break;
-        case 2048:return"#09c";break;
-        case 4096:return"#a6c";break;
-        case 8192:return"#93c";break;
-    }
-    return "black";
-}
-
-function getNumberColor(number){
-    if(number<=4)
-        return "#776e65";
-    return "white";
-}
-
-
-
+// module.exports.getPos = getPos;
+// module.exports.getNumberBackgroundColor = getNumberBackgroundColor;
+// module.exports.getNumberColor = getNumberColor;
+module.exports.render = render;
 },{"jquery":330,"ramda":88}]},{},[331]);
