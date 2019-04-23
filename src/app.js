@@ -2,7 +2,9 @@ const $ = require('jquery');
 const _ = require('ramda');
 const v = require('./view.js');
 
-// [Int] -> [Int]
+var score = 0;
+
+// [Int] -> [Int] 当前提供合并一行的功能, 需要 从哪儿移动到哪儿: [(Int,Int,Int,Int)] 和 合并的值 Int
 function merge(row) {
     function combine(arr) {
         for (let i=0, j=i+1; j<arr.length; i++,j++) {
@@ -76,6 +78,7 @@ const start = () => addTile(addTile(_.repeat([0,0,0,0], 4)));
 
 let grid = start();
 v.render(grid);
+v.displayScore(score);
 
 document.onkeydown = function(event) {
     if (!canMove(grid)) {
@@ -86,14 +89,27 @@ document.onkeydown = function(event) {
         grid = start();
     } else {
         if (event.keyCode == 37) {
-            grid = addTile(moveLeft(grid));
+            let newGrid = moveLeft(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveLeft(grid));
+            }
         } else if (event.keyCode == 38) {
-            grid = addTile(moveUp(grid));
+            let newGrid = moveUp(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveUp(grid));
+            }
         } else if (event.keyCode == 39) {
-            grid = addTile(moveRight(grid));
+            let newGrid = moveRight(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveRight(grid));
+            }
         } else if (event.keyCode == 40) {
-            grid = addTile(moveDown(grid));
+            let newGrid = moveDown(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveDown(grid));
+            }
         } 
     }
+    v.displayScore(score);
     v.render(grid);
 }

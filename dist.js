@@ -22580,7 +22580,9 @@ const $ = require('jquery');
 const _ = require('ramda');
 const v = require('./view.js');
 
-// [Int] -> [Int]
+var score = 0;
+
+// [Int] -> [Int] 当前提供合并一行的功能, 需要 从哪儿移动到哪儿: [(Int,Int,Int,Int)] 和 合并的值 Int
 function merge(row) {
     function combine(arr) {
         for (let i=0, j=i+1; j<arr.length; i++,j++) {
@@ -22652,14 +22654,9 @@ const check2048 = grid => _.length(_.filter(x => x === 2048, _.flatten(grid))) !
 
 const start = () => addTile(addTile(_.repeat([0,0,0,0], 4)));
 
-
-
-
-
-
-
 let grid = start();
 v.render(grid);
+v.displayScore(score);
 
 document.onkeydown = function(event) {
     if (!canMove(grid)) {
@@ -22670,45 +22667,46 @@ document.onkeydown = function(event) {
         grid = start();
     } else {
         if (event.keyCode == 37) {
-            grid = addTile(moveLeft(grid));
+            let newGrid = moveLeft(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveLeft(grid));
+            }
         } else if (event.keyCode == 38) {
-            grid = addTile(moveUp(grid));
+            let newGrid = moveUp(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveUp(grid));
+            }
         } else if (event.keyCode == 39) {
-            grid = addTile(moveRight(grid));
+            let newGrid = moveRight(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveRight(grid));
+            }
         } else if (event.keyCode == 40) {
-            grid = addTile(moveDown(grid));
+            let newGrid = moveDown(grid);
+            if (!_.equals(newGrid, grid)) {
+                grid = addTile(moveDown(grid));
+            }
         } 
     }
+    v.displayScore(score);
     v.render(grid);
 }
-
-
-
-
-
 },{"./view.js":332,"jquery":330,"ramda":88}],332:[function(require,module,exports){
 const _ = require('ramda');
 const $ = require('jquery');
 
 const root = document.getElementById("root");
+
+const gridContainer = document.getElementById("grid");
+
 for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
         const d = document.createElement("div");
         d.className = "grid-cell";
         d.id = "grid-cell-" + i + "-" + j;
-        root.appendChild(d);
+        gridContainer.appendChild(d);
     }
 }
-
-const rootStyle = document.getElementById("root").style;
-rootStyle.width = "460px";
-rootStyle.height = "460px";
-rootStyle.padding = "20px";
-rootStyle.margin = "5px auto";
-rootStyle.top = "50px";
-rootStyle.backgroundColor = "rgba(139,185,202,0.5)";
-rootStyle.borderRadius = "10px";
-rootStyle.position = "relative";
 
 let gridCell = document.getElementsByClassName("grid-cell");
 _.forEach(g => {
@@ -22766,7 +22764,7 @@ const render = grid => {
         for (let j = 0; j < 4; j++) {
             const d = document.createElement("div");
             d.className = "number-cell";
-            root.appendChild(d);
+            gridContainer.appendChild(d);
             d.borderRadius = "6px";
             d.style.position = "absolute";
             d.style.fontSize = grid[i][j] > 512 ? "40px" : "60px";
@@ -22788,8 +22786,10 @@ const render = grid => {
     }
 }
 
-// module.exports.getPos = getPos;
-// module.exports.getNumberBackgroundColor = getNumberBackgroundColor;
-// module.exports.getNumberColor = getNumberColor;
+const displayScore = score => {
+    $("#score").text(score);
+}    
+
 module.exports.render = render;
+module.exports.displayScore = displayScore;
 },{"jquery":330,"ramda":88}]},{},[331]);

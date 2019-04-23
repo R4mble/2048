@@ -2,24 +2,17 @@ const _ = require('ramda');
 const $ = require('jquery');
 
 const root = document.getElementById("root");
+
+const gridContainer = document.getElementById("grid");
+
 for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
         const d = document.createElement("div");
         d.className = "grid-cell";
         d.id = "grid-cell-" + i + "-" + j;
-        root.appendChild(d);
+        gridContainer.appendChild(d);
     }
 }
-
-const rootStyle = document.getElementById("root").style;
-rootStyle.width = "460px";
-rootStyle.height = "460px";
-rootStyle.padding = "20px";
-rootStyle.margin = "5px auto";
-rootStyle.top = "50px";
-rootStyle.backgroundColor = "rgba(139,185,202,0.5)";
-rootStyle.borderRadius = "10px";
-rootStyle.position = "relative";
 
 let gridCell = document.getElementsByClassName("grid-cell");
 _.forEach(g => {
@@ -77,7 +70,7 @@ const render = grid => {
         for (let j = 0; j < 4; j++) {
             const d = document.createElement("div");
             d.className = "number-cell";
-            root.appendChild(d);
+            gridContainer.appendChild(d);
             d.borderRadius = "6px";
             d.style.position = "absolute";
             d.style.fontSize = grid[i][j] > 512 ? "40px" : "60px";
@@ -99,4 +92,9 @@ const render = grid => {
     }
 }
 
+const displayScore = score => {
+    $("#score").text(score);
+}    
+
 module.exports.render = render;
+module.exports.displayScore = displayScore;

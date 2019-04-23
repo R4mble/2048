@@ -3,8 +3,22 @@
 <head>
     <meta charset=utf-8" />
     <title>Game 2048</title>
+    <link rel="stylesheet" type ="text/css" href="css/style.css" />
 </head>
-<div id="root"></div>
+<div id="root">
+    <div id="score-cell">
+        <div class="score-cell">当前分数</div>
+        <div class="button-cell"><span id="score">0</span></div>
+    </div>
+
+    <div id="hscore-cell">
+        <div class="hscore-cell">最高分数</div>
+        <div class="button-cell"><span id="score">0</span></div>
+    </div>
+
+    <div id="grid">
+    </div>
+</div>
 </body>
 <script src="dist.js"></script>
 </html>
