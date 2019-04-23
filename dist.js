@@ -22651,8 +22651,6 @@ const check2048 = grid => _.length(_.filter(x => x === 2048, _.flatten(grid))) !
 
 const start = () => addTile(addTile(_.repeat([0,0,0,0], 4)));
 
-
-
 const root = document.getElementById("root");
 for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
@@ -22662,10 +22660,6 @@ for (let i=0; i<4; i++) {
         root.appendChild(d);
     }
 }
-
-
-const l = console.log;
-
 
 const rootStyle = document.getElementById("root").style;
 rootStyle.width = "460px";
@@ -22732,15 +22726,22 @@ let grid = start();
 render(grid);
 
 document.onkeydown = function(event) {
-    if (event.keyCode == 37) {
-        grid = addTile(moveLeft(grid));
-    } else if (event.keyCode == 38) {
-        grid = addTile(moveUp(grid));
-    } else if (event.keyCode == 39) {
-        grid = addTile(moveRight(grid));
-    } else if (event.keyCode == 40) {
-        grid = addTile(moveDown(grid));
+    if (!canMove(grid)) {
+        alert("Game Over!");
+        grid = start();
+    } else if (check2048(grid)) {
+        alert("You Win!");
+        grid = start();
     } else {
+        if (event.keyCode == 37) {
+            grid = addTile(moveLeft(grid));
+        } else if (event.keyCode == 38) {
+            grid = addTile(moveUp(grid));
+        } else if (event.keyCode == 39) {
+            grid = addTile(moveRight(grid));
+        } else if (event.keyCode == 40) {
+            grid = addTile(moveDown(grid));
+        } 
     }
     render(grid);
 }
