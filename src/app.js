@@ -9,7 +9,8 @@ function merge(row) {
     function combine(arr) {
         for (let i=0, j=i+1; j<arr.length; i++,j++) {
             if (arr[i] === arr[j]) {
-                arr[i] *= 2;
+                arr[i] *= 2; 
+                score += arr[i];
                 arr[j] = 0;
                 i++;
                 j++;
@@ -76,9 +77,24 @@ const check2048 = grid => _.length(_.filter(x => x === 2048, _.flatten(grid))) !
 
 const start = () => addTile(addTile(_.repeat([0,0,0,0], 4)));
 
+const keyDirection = {
+    "37": moveLeft,
+    "38": moveUp,
+    "39": moveRight,
+    "40": moveDown
+}
+
+const compare = (grid, keyCode) => {
+    let newGrid = keyDirection[keyCode](grid);
+    if (!_.equals(newGrid, grid)) {
+        return addTile(newGrid);
+    }
+    return grid;
+}
+
 let grid = start();
 v.render(grid);
-v.displayScore(score);
+v.displayScore(score / 4);
 
 document.onkeydown = function(event) {
     if (!canMove(grid)) {
@@ -88,28 +104,9 @@ document.onkeydown = function(event) {
         alert("You Win!");
         grid = start();
     } else {
-        if (event.keyCode == 37) {
-            let newGrid = moveLeft(grid);
-            if (!_.equals(newGrid, grid)) {
-                grid = addTile(moveLeft(grid));
-            }
-        } else if (event.keyCode == 38) {
-            let newGrid = moveUp(grid);
-            if (!_.equals(newGrid, grid)) {
-                grid = addTile(moveUp(grid));
-            }
-        } else if (event.keyCode == 39) {
-            let newGrid = moveRight(grid);
-            if (!_.equals(newGrid, grid)) {
-                grid = addTile(moveRight(grid));
-            }
-        } else if (event.keyCode == 40) {
-            let newGrid = moveDown(grid);
-            if (!_.equals(newGrid, grid)) {
-                grid = addTile(moveDown(grid));
-            }
-        } 
+        grid = compare(grid, event.keyCode);
     }
-    v.displayScore(score);
+
+    v.displayScore(score / 4);
     v.render(grid);
 }
