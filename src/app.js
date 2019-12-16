@@ -2,14 +2,14 @@ const $ = require('jquery');
 const _ = require('ramda');
 const v = require('./view.js');
 
-var score = 0;
+let score = 0;
 
 // [Int] -> [Int] 当前提供合并一行的功能, 需要 从哪儿移动到哪儿: [(Int,Int,Int,Int)] 和 合并的值 Int
 function merge(row) {
     function combine(arr) {
         for (let i=0, j=i+1; j<arr.length; i++,j++) {
             if (arr[i] === arr[j]) {
-                arr[i] *= 2; 
+                arr[i] *= 2;
                 score += arr[i];
                 arr[j] = 0;
                 i++;
@@ -50,7 +50,7 @@ const setSquare = (grid, [row, col], val) => {
     return _.concat(_.append(mid, pre), post)
 }
 
-// Grid -> Bool           
+// Grid -> Bool
 const canMove = grid => {
     let directions = [moveLeft(grid), moveRight(grid), moveUp(grid), moveDown(grid)]
     let allChoices = _.map(_.compose(_.length, getZeroes), directions)
